@@ -1,0 +1,33 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: reboot-agent
+  namespace: reboot-operator
+spec:
+  selector:
+    matchLabels:
+      app: reboot-agent
+  template:
+    metadata:
+      labels:
+        app: reboot-agent
+    spec:
+      containers:
+      - name: reboot-agent
+        image: jamiehannaford/demo-reboot-agent
+        imagePullPolicy: Always
+        command:
+        - /reboot-agent
+        - --v=4
+        env:
+          - name: NODE_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
+        volumeMounts:
+        - mountPath: /var/run/dbus/system_bus_socket
+          name: system-bus-socket
+      volumes:
+      - name: system-bus-socket
+        hostPath:
+          path: /var/run/dbus/system_bus_socket

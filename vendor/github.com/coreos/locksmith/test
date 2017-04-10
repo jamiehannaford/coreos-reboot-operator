@@ -1,0 +1,31 @@
+#!/bin/bash -e
+
+source ./build
+
+if [ -z "$PKG" ]; then
+	PKG="./updateengine ./lock ./locksmithctl"
+	GOFMTPATH="$PKG"
+else
+	# strip out leading dotslashes and trailing slashes from PKG=./foo/
+	PKG=${PKG/#./}
+	PKG=${PKG/#\//}
+	PKG=${PKG/%\//}
+	GOFMTPATH="$PKG"
+fi
+
+# split packages into an array and prepend repo to each local package
+split=(${PKG// / })
+TEST=${split[@]/#/github.com/coreos/locksmith/}
+
+echo "Running tests..."
+go test -i $TEST
+go test ${COVER} $@ ${TEST}
+
+echo "Checking gofmt..."
+fmtRes=$(gofmt -l $GOFMTPATH)
+if [ -n "${fmtRes}" ]; then
+	echo -e "gofmt checking failed:\n${fmtRes}"
+	exit 255
+fi
+
+echo "Success"

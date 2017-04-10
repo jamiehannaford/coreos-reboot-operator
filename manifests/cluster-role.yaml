@@ -1,0 +1,24 @@
+apiVersion: rbac.authorization.k8s.io/v1alpha1
+kind: ClusterRole
+metadata:
+  name: reboot-operator
+rules:
+- apiGroups: [""]
+  resources: ["nodes"]
+  verbs: ["get", "watch", "list", "update"]
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "list", "delete"]
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1alpha1
+metadata:
+  name: reboot-operator
+subjects:
+- kind: Group
+  name: system:serviceaccounts
+  namespace: reboot-operator
+roleRef:
+  kind: ClusterRole
+  name: reboot-operator
+  apiGroup: rbac.authorization.k8s.io
