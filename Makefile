@@ -5,11 +5,9 @@ all: \
 	bin/linux/reboot-controller
 
 images: GVERSION=$(shell $(CURDIR)/git-version.sh)
-images:
-	bin/linux/reboot-agent
-	bin/linux/reboot-controller
-	docker build -f Dockerfile-agent -t jamiehannaford/demo-reboot-agent:$(GVERSION) .
-	docker build -f Dockerfile-controller -t jamiehannaford/demo-reboot-controller:$(GVERSION) .
+images: bin/linux/reboot-agent bin/linux/reboot-controller
+	docker build -f Dockerfile-agent -t jamiehannaford/reboot-agent:$(GVERSION) .
+	docker build -f Dockerfile-controller -t jamiehannaford/reboot-controller:$(GVERSION) .
 
 check:
 	@find . -name vendor -prune -o -name '*.go' -exec gofmt -s -d {} +
@@ -22,7 +20,13 @@ vendor:
 clean:
 	rm -rf bin
 
-bin/%: LDFLAGS=-X github.com/jamiehannaford/coreos-reboot-operator/common.Version=$(shell $(CURDIR)/git-version.sh)
+bin/%: LDFLAGS=-X github.com/jamiehannaford/coreos-reboot-operator/pkg/common.Version=$(shell $(CURDIR)/git-version.sh)
 bin/%: $(GOFILES)
 	mkdir -p $(dir $@)
-	GOOS=$(word 1, $(subst /, ,$*)) GOARCH=amd64 CGO_ENABLED=0 go build -ldflags "$(LDFLAGS)" -a -installsuffix cgo -o $@ github.com/jamiehannaford/coreos-reboot-operator/$(notdir $@)
+	GOOS=$(word 1, $(subst /, ,$*)) GOARCH=amd64 CGO_ENABLED=0 go build -ldflags "$(LDFLAGS)" -a -installsuffix cgo -o $@ github.com/jamiehannaford/coreos-reboot-operator/pkg/$(notdir $@)
+
+rollout-agent:
+	bash ./scripts/rollout.sh reboot-agent
+
+rollout-controller:
+	bash ./scripts/rollout.sh reboot-controller

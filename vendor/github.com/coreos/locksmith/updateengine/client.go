@@ -33,7 +33,7 @@ const (
 
 type Client struct {
 	conn   *dbus.Conn
-	object *dbus.Object
+	object dbus.BusObject
 	ch     chan *dbus.Signal
 }
 

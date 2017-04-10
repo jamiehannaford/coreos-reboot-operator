@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: reboot-controller
-        image: jamiehannaford/demo-reboot-controller
+        image: jamiehannaford/reboot-controller
         imagePullPolicy: Always
         command:
         - /reboot-controller

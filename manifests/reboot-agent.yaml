@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: reboot-agent
-        image: jamiehannaford/demo-reboot-agent
+        image: jamiehannaford/reboot-agent
         imagePullPolicy: Always
         command:
         - /reboot-agent
