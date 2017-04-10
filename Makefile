@@ -4,7 +4,7 @@ all: \
 	bin/linux/reboot-agent \
 	bin/linux/reboot-controller
 
-images: GVERSION=$(shell $(CURDIR)/git-version.sh)
+images: GVERSION=$(shell $(CURDIR)/scripts/git-version.sh)
 images: bin/linux/reboot-agent bin/linux/reboot-controller
 	docker build -f Dockerfile-agent -t jamiehannaford/reboot-agent:$(GVERSION) .
 	docker build -f Dockerfile-controller -t jamiehannaford/reboot-controller:$(GVERSION) .
@@ -20,7 +20,7 @@ vendor:
 clean:
 	rm -rf bin
 
-bin/%: LDFLAGS=-X github.com/jamiehannaford/coreos-reboot-operator/pkg/common.Version=$(shell $(CURDIR)/git-version.sh)
+bin/%: LDFLAGS=-X github.com/jamiehannaford/coreos-reboot-operator/pkg/common.Version=$(shell $(CURDIR)/scripts/git-version.sh)
 bin/%: $(GOFILES)
 	mkdir -p $(dir $@)
 	GOOS=$(word 1, $(subst /, ,$*)) GOARCH=amd64 CGO_ENABLED=0 go build -ldflags "$(LDFLAGS)" -a -installsuffix cgo -o $@ github.com/jamiehannaford/coreos-reboot-operator/pkg/$(notdir $@)
