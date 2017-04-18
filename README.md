@@ -26,7 +26,7 @@ This is the lifecycle of a reboot:
 
 ## Prerequisites
 
-- The nodes must disable auto-reboots. You can do so by following the [update strategy](https://coreos.com/os/docs/latest/update-strategies.html) docs, or by simply disabling locksmith:
+- The nodes must disable auto-reboots. You can do so by following the [update strategy](https://coreos.com/os/docs/latest/update-strategies.html) docs, or by disabling locksmith:
 
 ```bash
 systemctl stop locksmithd
