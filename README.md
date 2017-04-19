@@ -6,7 +6,7 @@ This project was inspired by Aaron Levy's [KubeCon talk](https://www.youtube.com
 
 ## How it works
 
-The operator is composed of two components: the `controller` which synchronizes the reboots, ensuring that the cluster will not be negatively impacted; and the `agent` daemon set, which listens out for reboot requests on systemd and performs the reboot itself.
+The operator is composed of two components: the `controller` which synchronizes the reboots, ensuring that the cluster will not be negatively impacted; and the `agent` DaemonSet, which listens out for reboot requests on systemd and performs the reboot itself.
 
 This is the lifecycle of a reboot:
 
