@@ -1,5 +1,7 @@
 # CoreOS reboot operator
 
+**NOTE: This codebase has been deprecated in favour of CoreOS's [official operator](https://github.com/coreos/container-linux-update-operator)**.
+
 A Kubernetes [operator](https://coreos.com/blog/introducing-operators.html) that manages the reboot cycle for CoreOS nodes. Normally when a node self-updates, it waits to be rebooted in order for the changes to be effected. This has been traditionally done either by manual intervention or by sync tools like [locksmith](https://github.com/coreos/locksmith). Although the latter works very well, it does not offer full programmatic extensibility that's needed by some orgs who require high availability for their Kubernetes clusters.
 
 This project was inspired by Aaron Levy's [KubeCon talk](https://www.youtube.com/watch?v=_BuqPMlXfpE) and is heavily based on his [demo controller](https://github.com/aaronlevy/kube-controller-demo) repository. Although this project has been verified to work, it's still very much in alpha so it's advised to use this in dev environments only.
